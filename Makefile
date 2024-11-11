@@ -19,7 +19,7 @@ SDL3_BRANCH := preview-3.1.6
 LUAJIT_BRANCH := v2.1
 OPENAL_BRANCH := 1.23.1
 ZLIB_BRANCH := v1.3
-HARFBUZZ_BRANCH := 6.0.0
+HARFBUZZ_BRANCH := 10.1.0
 
 # Project versions (for downloadable tars)
 LIBOGG_VERSION := 1.3.5
