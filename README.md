@@ -12,7 +12,7 @@ First, install these dependencies (adapt accordingly for non-Debian distro):
 sudo apt-get install autotools-dev automake autoconf libtool patchelf curl pkg-config
 ```
 
-Then followed by [all dependencies required by SDL](https://github.com/libsdl-org/SDL/blob/SDL2/docs/README-linux.md#build-dependencies), but **not** the SDL itself.
+Then followed by [all dependencies required by SDL](https://github.com/libsdl-org/SDL/blob/main/docs/README-linux.md#build-dependencies), but **not** the SDL itself.
 
 Afterwards, run `make`. `love-main.AppImage` and `love-main.tar.gz` (by default) will be generated. See the Makefile script for various tweakable variables.
 
