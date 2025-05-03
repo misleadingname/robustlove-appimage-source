@@ -17,7 +17,7 @@ LOVE_REPOSITORY := https://github.com/love2d/love
 LOVE_BRANCH := main
 SDL3_BRANCH := release-3.2.10
 LUAJIT_BRANCH := v2.1
-OPENAL_BRANCH := 1.23.1
+OPENAL_BRANCH := 1.24.3
 ZLIB_BRANCH := v1.3
 HARFBUZZ_BRANCH := 10.1.0
 
