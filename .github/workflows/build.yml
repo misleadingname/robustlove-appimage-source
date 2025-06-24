@@ -3,7 +3,10 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        runner: [ubuntu-22.04, ubuntu-22.04-arm]
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -16,7 +19,8 @@ jobs:
         libaudio-dev libjack-dev libsndio-dev libsamplerate0-dev libx11-dev libxext-dev \
         libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev \
         libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
-        libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev libfuse2
+        libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev libfuse2 \
+        libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
     - name: Pull Dependencies
       run: make getdeps -j
     - name: Build
@@ -25,9 +29,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: AppImage
-        path: love-12.0-development.AppImage
+        path: love-main-${{ runner.arch }}.AppImage
     - name: Artifact Tape Archive
       uses: actions/upload-artifact@v4
       with:
         name: tar.gz
-        path: love-12.0-development.tar.gz
+        path: love-main-${{ runner.arch }}.tar.gz
