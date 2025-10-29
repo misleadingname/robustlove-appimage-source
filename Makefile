@@ -232,7 +232,7 @@ override LUAJIT_PATH := LuaJIT-$(LUAJIT_BRANCH)
 $(LUAJIT_PATH)/Makefile:
 	# git clone --depth 1 -b $(LUAJIT_BRANCH) https://github.com/LuaJIT/LuaJIT $(LUAJIT_PATH)
 	git clone https://github.com/misleadingname/robustmegasource ./megasource
-	mv ./megasource/lib/LuaJIT $(LUAJIT_PATH)
+	mv ./megasource/libs/LuaJIT $(LUAJIT_PATH)
 	rm -rf ./megasource/
 
 installdir/lib/libluajit-5.1.so: $(LUAJIT_PATH)/Makefile
