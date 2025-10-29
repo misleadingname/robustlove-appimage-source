@@ -20,6 +20,7 @@ LUAJIT_BRANCH := v2.1
 OPENAL_BRANCH := 1.24.3
 ZLIB_BRANCH := v1.3
 HARFBUZZ_BRANCH := 10.1.0
+CMGUI-LOVE_BRANCH := main
 
 # Project versions (for downloadable tars)
 LIBOGG_VERSION := 1.3.5
@@ -239,6 +240,15 @@ installdir/lib/libluajit-5.1.so: $(LUAJIT_PATH)/Makefile
 	cd $(LUAJIT_PATH) && LDFLAGS="-Wl,-rpath,'\$$\$$ORIGIN/../lib'" $(MAKE) amalg -j$(NUMBER_OF_PROCESSORS) PREFIX=/usr
 	cd $(LUAJIT_PATH) && make install PREFIX=$(INSTALLPREFIX)
 	cd $(LUAJIT_PATH) && make clean
+
+# CMGUI
+override CMGUI-LOVE_PATH := cmgui-$(CMGUI-LOVE_BRANCH)
+
+$(CMGUI-LOVE_PATH):
+	git clone --recursive https://codeberg.org/apicici/cimgui-love.git $(CMGUI-LOVE_PATH)
+	cmake $(CMGUI-LOVE_PATH)
+	mkdir -p $(CMGUI-LOVE_PATH)/build
+	cmake --build $(CMGUI-LOVE_PATH)/build
 
 # LOVE
 override LOVE_PATH := love2d-$(LOVE_BRANCH)
