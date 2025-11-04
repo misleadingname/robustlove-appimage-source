@@ -11,12 +11,11 @@ CMAKE_VERSION := 3.30.4
 CMAKE_URL := https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION)-linux-$(shell uname -m).sh
 
 # LOVE Repository URL
-LOVE_REPOSITORY := https://github.com/love2d/love
+LOVE_REPOSITORY := https://github.com/misleadingname/robustlove
 
 # Project branches (for git-based projects)
 LOVE_BRANCH := main
 SDL3_BRANCH := release-3.2.16
-LUAJIT_BRANCH := v2.1
 OPENAL_BRANCH := 1.24.3
 ZLIB_BRANCH := v1.3
 HARFBUZZ_BRANCH := 10.1.0
@@ -226,28 +225,14 @@ $(LIBMODPLUG_FILE)/build/Makefile: $(LIBMODPLUG_FILE)/configure
 installdir/lib/libmodplug.so: $(LIBMODPLUG_FILE)/build/Makefile
 	cd $(LIBMODPLUG_FILE)/build && $(MAKE) install -j$(NUMBER_OF_PROCESSORS)
 
-# LuaJIT
-override LUAJIT_PATH := LuaJIT-$(LUAJIT_BRANCH)
-
-$(LUAJIT_PATH)/Makefile:
-	# git clone --depth 1 -b $(LUAJIT_BRANCH) https://github.com/LuaJIT/LuaJIT $(LUAJIT_PATH)
-	git clone https://github.com/misleadingname/robustmegasource ./megasource
-	mv ./megasource/libs/LuaJIT $(LUAJIT_PATH)
-	rm -rf ./megasource/
-
-installdir/lib/libluajit-5.1.so: $(LUAJIT_PATH)/Makefile
-	cd $(LUAJIT_PATH) && LDFLAGS="-Wl,-rpath,'\$$\$$ORIGIN/../lib'" $(MAKE) amalg -j$(NUMBER_OF_PROCESSORS) PREFIX=/usr
-	cd $(LUAJIT_PATH) && make install PREFIX=$(INSTALLPREFIX)
-	cd $(LUAJIT_PATH) && make clean
-
 # LOVE
 override LOVE_PATH := love2d-$(LOVE_BRANCH)
 
 $(LOVE_PATH)/CMakeLists.txt:
 	git clone --depth 1 -b $(LOVE_BRANCH) $(LOVE_REPOSITORY) $(LOVE_PATH)
 
-$(LOVE_PATH)/build/CMakeCache.txt $(LOVE_PATH)/build/love.desktop: $(CMAKE) $(LOVE_PATH)/CMakeLists.txt installdir/lib/libluajit-5.1.so installdir/lib/libmodplug.so installdir/lib/libfreetype.so installdir/lib/libopenal.so installdir/lib/libz.so installdir/lib/libtheora.so installdir/lib/libvorbis.so installdir/lib/libogg.so installdir/lib/libSDL3.so installdir/lib/libharfbuzz.so
-	OPENALDIR=$$PWD/installdir FREETYPE_DIR=$$PWD/installdir $(CMAKE) -B$(LOVE_PATH)/build -S$(LOVE_PATH) $(CMAKE_OPTS) -DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLOVE_USE_SDL3=ON -DHarfbuzz_ROOT=installdir -DModPlug_ROOT=installdir -DSDL3_ROOT=installdir -DTheora_ROOT=installdir -DVorbis_ROOT=installdir -DZLIB_ROOT=installdir -DOgg_ROOT=installdir -DLuaJIT_ROOT=installdir
+$(LOVE_PATH)/build/CMakeCache.txt $(LOVE_PATH)/build/love.desktop: $(CMAKE) $(LOVE_PATH)/CMakeLists.txt installdir/lib/libmodplug.so installdir/lib/libfreetype.so installdir/lib/libopenal.so installdir/lib/libz.so installdir/lib/libtheora.so installdir/lib/libvorbis.so installdir/lib/libogg.so installdir/lib/libSDL3.so installdir/lib/libharfbuzz.so
+	OPENALDIR=$$PWD/installdir FREETYPE_DIR=$$PWD/installdir $(CMAKE) -B$(LOVE_PATH)/build -S$(LOVE_PATH) $(CMAKE_OPTS) -DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLOVE_USE_SDL3=ON -DHarfbuzz_ROOT=installdir -DModPlug_ROOT=installdir -DSDL3_ROOT=installdir -DTheora_ROOT=installdir -DVorbis_ROOT=installdir -DZLIB_ROOT=installdir -DOgg_ROOT=installdir
 
 installdir/bin/love: $(LOVE_PATH)/build/CMakeCache.txt
 	$(CMAKE) --build $(LOVE_PATH)/build --target install -j $(NUMBER_OF_PROCESSORS)
@@ -307,7 +292,7 @@ else
 	cd squashfs-root/usr/lib && ../../AppRun ../../../installdir2 ../../../$(APPIMAGE_OUTPUT)
 endif
 
-getdeps: $(CMAKE) appimagetool $(SDL3_PATH)/CMakeLists.txt $(LIBOGG_FILE).tar.gz $(LIBVORBIS_FILE).tar.gz $(LIBTHEORA_FILE).tar.gz $(ZLIB_PATH)/configure $(BZIP2_FILE).tar.gz $(FT_FILE).tar.gz $(LIBMODPLUG_FILE).tar.gz $(LUAJIT_PATH)/Makefile $(LOVE_PATH)/CMakeLists.txt $(HB_PATH)/CMakeLists.txt
+getdeps: $(CMAKE) appimagetool $(SDL3_PATH)/CMakeLists.txt $(LIBOGG_FILE).tar.gz $(LIBVORBIS_FILE).tar.gz $(LIBTHEORA_FILE).tar.gz $(ZLIB_PATH)/configure $(BZIP2_FILE).tar.gz $(FT_FILE).tar.gz $(LIBMODPLUG_FILE).tar.gz $(LOVE_PATH)/CMakeLists.txt $(HB_PATH)/CMakeLists.txt
 
 AppImage: $(APPIMAGE_OUTPUT)
 

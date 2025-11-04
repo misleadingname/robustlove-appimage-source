@@ -1,7 +1,6 @@
 *.AppImage
 *.tar.bz2
 *.tar.gz
-LuaJIT-*/
 SDL2-*/
 appimagetool
 brotli-*/
